@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " T ",
+    "FTF",
+    " S "
+  ],
+  "key": {
+    "T": {
+      "item": "merp:topaz"
+    },
+    "F": {
+      "item": "minecraft:fire_charge"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "merp:topaz_sword",
+    "count": 1
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "bao_scream": {
+    "sounds": [
+      "merp:bao_scream"
+    ]
+  },
+  "bao_ambient":
+  {
+    "sounds": [
+      "merp:bao_ambient"
+    ]
+  },
+  "bao_death":
+  {
+    "sounds": [
+      "merp:bao_death"
+    ]
+  }
+}
+
+

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "merp",
+  "version": "${version}",
+
+  "name": "Merplings",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "Bubblie"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/merp/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "io.github.Bubblie.Merplings.Main"
+
+    ],
+
+    "client": [
+      "io.github.Bubblie.Merplings.Entities.EntityInitializer"
+    ]
+  },
+  "mixins": [
+    "modid.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
