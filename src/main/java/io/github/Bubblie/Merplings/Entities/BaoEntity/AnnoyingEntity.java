@@ -1,6 +1,6 @@
 package io.github.Bubblie.Merplings.Entities.BaoEntity;
 
-import io.github.Bubblie.Merplings.Entities.EntityInventory;
+
 import io.github.Bubblie.Merplings.Entities.EntitySounds;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
@@ -8,23 +8,18 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
-import net.minecraft.inventory.Inventories;
+
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.World;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 
 public class AnnoyingEntity extends PathAwareEntity {
@@ -54,6 +49,7 @@ public class AnnoyingEntity extends PathAwareEntity {
         this.goalSelector.add(5, new LookAroundGoal(this));
         this.goalSelector.add(4,new MeleeAttackGoal(this,1.0D, false));
         this.targetSelector.add(5, new FollowTargetGoal<>(this, PlayerEntity.class,true));
+
     }
 
     //Sound
