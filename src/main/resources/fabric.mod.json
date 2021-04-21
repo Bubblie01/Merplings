@@ -27,8 +27,9 @@
       "io.github.Bubblie.Merplings.Entities.EntityInitializer"
     ]
   },
+
   "mixins": [
-    "modid.mixins.json"
+    "merp.mixins.json"
   ],
 
   "depends": {

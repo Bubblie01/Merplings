@@ -6,7 +6,9 @@
   "mixins": [
   ],
   "client": [
-    "ExampleMixin"
+    "ExampleMixin",
+    "SensorTypeAccessor",
+    "MemoryModuleTypeAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
