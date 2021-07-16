@@ -1,24 +1,15 @@
 package io.github.Bubblie.Merplings.Entities.BaoEntity;
 
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.Dynamic;
 import io.github.Bubblie.Merplings.Entities.EntitySounds;
-import io.github.Bubblie.Merplings.Main;
-import io.github.Bubblie.Merplings.mixin.SensorTypeAccessor;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.brain.Activity;
-import net.minecraft.entity.ai.brain.Brain;
-import net.minecraft.entity.ai.brain.MemoryModuleType;
-import net.minecraft.entity.ai.brain.sensor.Sensor;
-import net.minecraft.entity.ai.brain.sensor.SensorType;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.ai.pathing.MobNavigation;
+import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.HoglinBrain;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -26,33 +17,31 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.network.DebugInfoSender;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.tag.ItemTags;
+import net.minecraft.tag.Tag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
-import io.github.Bubblie.Merplings.mixin.EntityBrainHelpers;
+import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Supplier;
-
 public class AnnoyingEntity extends PathAwareEntity {
-    private static final ImmutableList<MemoryModuleType<?>> MEMORY_MODULES;
-    private static final ImmutableList<SensorType<? extends Sensor<? super AnnoyingEntity>>> SENSORS;
-    private int movementCooldownTicks;
 
-    private final SimpleInventory inventory = new SimpleInventory(8);
+    private final EntityInventory inventory = new EntityInventory(8);
+
 
     public AnnoyingEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
         super(entityType, world);
-        canMoveVoluntarily();
-        canSee(this);
         setCanPickUpLoot(true);
+
 
 
     }
@@ -64,41 +53,6 @@ public class AnnoyingEntity extends PathAwareEntity {
         super.readCustomDataFromTag(tag);
     }
 
-    static
-    {
-        MEMORY_MODULES = ImmutableList.of(MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.WALK_TARGET, MemoryModuleType.INTERACTION_TARGET, MemoryModuleType.MOBS, MemoryModuleType.PATH, MemoryModuleType.LOOK_TARGET, MemoryModuleType.MEETING_POINT, MemoryModuleType.NEAREST_VISIBLE_TARGETABLE_PLAYER);
-        SENSORS = ImmutableList.of(SensorType.NEAREST_ITEMS, SensorType.NEAREST_PLAYERS);
-    }
-
-
-    @Override
-    public Brain<AnnoyingEntity> getBrain() {
-        return (Brain<AnnoyingEntity>) super.getBrain();
-    }
-
-    @Override
-    protected Brain.Profile<AnnoyingEntity> createBrainProfile() {
-        return Brain.createProfile(MEMORY_MODULES, SENSORS);
-    }
-
-    @Override
-    protected Brain<?> deserializeBrain(Dynamic<?> dynamic) {
-        return MerplingBrain.create(this.createBrainProfile().deserialize(dynamic));
-    }
-
-    @Override
-    public void tickMovement() {
-        super.tickMovement();
-    }
-
-    @Override
-    protected void mobTick()
-    {
-        this.world.getProfiler().push("merplingBrain");
-        this.getBrain().tick((ServerWorld)this.world, this);
-        this.world.getProfiler().pop();
-        super.mobTick();
-    }
 
     @Nullable
     public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable CompoundTag entityTag) {
@@ -116,20 +70,30 @@ public class AnnoyingEntity extends PathAwareEntity {
 
 
 
-    /*
+
     @Override
     protected void initGoals()
     {
-        this.goalSelector.add(7, new WanderAroundFarGoal(this,0.25D,0.0F));
-        this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 12.0F));
-        this.goalSelector.add(5, new LookAroundGoal(this));
-        this.goalSelector.add(4,new MeleeAttackGoal(this,1.0D, false));
-        this.targetSelector.add(5, new FollowTargetGoal<>(this, PlayerEntity.class,true));
+        //this.goalSelector.add(5, new WanderAroundFarGoal(this,0.35D,0.0F));
+        //this.goalSelector.add(5, new LookAtEntityGoal(this, PlayerEntity.class, 12.0F));
+        //this.goalSelector.add(6, new LookAroundGoal(this));
+        this.goalSelector.add(1, new TemptGoal(this, 0.5D, Ingredient.fromTag(ItemTags.WOOL), false));
+        this.goalSelector.add(2, new CraftBedGoal(this,1D));
+        /*
+        this.goalSelector.add(4, new MoveToTargetPosGoal(this,0.5D,8) {
+            @Override
+            protected boolean isTargetPos(WorldView world, BlockPos pos) {
+                return world.getBlockState(pos).isOf(Blocks.CRAFTING_TABLE) && world.getBlockState(pos.up()).canPathfindThrough(world, pos, NavigationType.LAND);
+            }
+        });
+
+         */
+
 
 
     }
 
-     */
+
 
 
 
@@ -153,7 +117,7 @@ public class AnnoyingEntity extends PathAwareEntity {
     }
 
     //Inventory
-    public SimpleInventory getInventory() {
+    public EntityInventory getInventory() {
         return this.inventory;
     }
 
@@ -192,11 +156,13 @@ public class AnnoyingEntity extends PathAwareEntity {
                     }
                 }
 
-
         }
 
 
-    /*
+
+
+
+        /*
     @Override
     public boolean tryAttack(Entity target) {
         return super.tryAttack(target);
@@ -231,18 +197,17 @@ public class AnnoyingEntity extends PathAwareEntity {
     @Override
     public ActionResult interactMob(PlayerEntity user, Hand hand)
     {
+
         for(int i = 0; i<inventory.size(); i++)
         {
             System.out.println("Slot: " + i + ": " + inventory.getStack(i));
         }
         System.out.println("Equipment Slot " + getPreferredEquipmentSlot(inventory.getStack(0)));
         System.out.println("Equipped Stack " + getItemsEquipped());
-        System.out.println(getBrain().hasMemoryModule(MemoryModuleType.INTERACTION_TARGET));
-        System.out.println(getBrain().hasActivity(Activity.CORE));
-        System.out.println(getBrain().getRunningTasks());
-        System.out.println(getBrain().getFirstPossibleNonCoreActivity());
-        System.out.println(getBrain());
 
+
+
+        inventory.searchIngredient(ItemTags.WOOL);
 
         return ActionResult.SUCCESS;
     }
@@ -253,9 +218,10 @@ public class AnnoyingEntity extends PathAwareEntity {
     }
 
 
+
     public static void registerAnnoyingEntity()
     {
-        FabricDefaultAttributeRegistry.register(BAO,AnnoyingEntity.createMobAttributes().add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.4));
+        FabricDefaultAttributeRegistry.register(BAO,AnnoyingEntity.createMobAttributes().add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5D));
 
     }
 
