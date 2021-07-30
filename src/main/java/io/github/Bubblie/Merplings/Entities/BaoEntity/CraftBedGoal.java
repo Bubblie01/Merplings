@@ -58,10 +58,14 @@ public class CraftBedGoal extends MoveToTargetPosGoal {
     @Override
     public void start()
     {
+            BlockPos blockPos = this.getTargetPos();
             this.startMovingToTarget();
-                    this.mob.getInventory().removeItem(Items.OAK_PLANKS, 3);
-                    this.mob.getInventory().removeItem(Items.WHITE_WOOL, 3);
-                    this.mob.getInventory().addItem(Items.WHITE_BED, 1);
+            System.out.println(blockPos);
+                    if(this.mob.getBlockPos().equals(blockPos)) {
+                        this.mob.getInventory().removeItem(Items.OAK_PLANKS, 3);
+                        this.mob.getInventory().removeItem(Items.WHITE_WOOL, 3);
+                        this.mob.getInventory().addItem(Items.WHITE_BED, 1);
+                    }
 
 
 
@@ -76,12 +80,11 @@ public class CraftBedGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean shouldResetPath() {
-        return this.tryingTime % 20 == 0;
+        return this.tryingTime % 40 == 0;
     }
 
-
-    public BlockPos getTargetPos() {
-        return this.targetPos;
+    @Override
+    protected void startMovingToTarget() {
+        super.startMovingToTarget();
     }
-
 }

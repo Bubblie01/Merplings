@@ -11,7 +11,7 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Tickable;
+
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -38,7 +38,7 @@ public class CustomSwordItem extends SwordItem
         double YCord = mouseLocation.getY();
         double ZCord = mouseLocation.getZ();
         //Fireball entity and velocity
-        FireballEntity fireballEntity = new FireballEntity(user.world, user, XCord, YCord, ZCord);
+        FireballEntity fireballEntity = new FireballEntity(user.world,user,XCord, YCord, ZCord, 1);
         //Updates the position and puts the fireball in the player's eyesight level and the player x and z positions.
         fireballEntity.updatePosition(user.getX(), user.getEyeY(), user.getZ());
         //Spawns the fireball entity in the world.
