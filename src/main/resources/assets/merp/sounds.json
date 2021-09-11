@@ -15,7 +15,15 @@
     "sounds": [
       "merp:bao_death"
     ]
+  },
+
+  "scribble":
+  {
+    "sounds": [
+      "merp:scribble"
+    ]
   }
+
 }
 
 

@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
-import io.github.Bubblie.Merplings.Entities.EntitySounds;
+import io.github.Bubblie.Merplings.Entities.ModSounds;
 import io.github.Bubblie.Merplings.Structures.StructureData;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
@@ -154,17 +154,17 @@ public class AnnoyingEntity extends PathAwareEntity {
     //Sound
     public SoundEvent getHurtSound(DamageSource source)
     {
-        return EntitySounds.BAO_SCREAM_EVENT;
+        return ModSounds.BAO_SCREAM_EVENT;
     }
 
     public SoundEvent getAmbientSound()
     {
-        return EntitySounds.BAO_AMBIENT_EVENT;
+        return ModSounds.BAO_AMBIENT_EVENT;
     }
 
     public SoundEvent getDeathSound()
     {
-        return EntitySounds.BAO_DEATH_EVENT;
+        return ModSounds.BAO_DEATH_EVENT;
     }
 
     //Inventory

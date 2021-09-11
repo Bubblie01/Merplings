@@ -1,10 +1,13 @@
 package io.github.Bubblie.Merplings;
 
+import io.github.Bubblie.Merplings.Mana.IManaManager;
+import io.github.Bubblie.Merplings.Mana.ManaManager;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -39,20 +42,30 @@ public class CustomSwordItem extends SwordItem
         double ZCord = mouseLocation.getZ();
         //Fireball entity and velocity
         FireballEntity fireballEntity = new FireballEntity(user.world,user,XCord, YCord, ZCord, 1);
+
         //Updates the position and puts the fireball in the player's eyesight level and the player x and z positions.
         fireballEntity.updatePosition(user.getX(), user.getEyeY(), user.getZ());
-        //Spawns the fireball entity in the world.
-        user.world.spawnEntity(fireballEntity);
+
         //Removes 50 durability everytime a fireball is spawned using right click
         stack.damage(50, (LivingEntity)user, (entity) -> {
             entity.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
         });
 
         //Sets a cooldown for 20 ticks. every 20 ticks equals 1 second real time.
-        user.getItemCooldownManager().set(this, 40);
+        //user.getItemCooldownManager().set(this, 40);
+
+        //Mana Test
+        if(!world.isClient) {
+            IManaManager manaManager = (IManaManager) user;
+            user.world.spawnEntity(fireballEntity);
+            manaManager.getManaManager().subtractMana(5);
+            System.out.println(manaManager.getManaManager().getManaLevel());
+        }
+
 
         //returns success based on the item in the user's hand
         return TypedActionResult.success(stack);
+
     }
 
 }

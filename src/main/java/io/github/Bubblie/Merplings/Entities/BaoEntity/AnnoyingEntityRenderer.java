@@ -21,7 +21,7 @@ public class AnnoyingEntityRenderer extends MobEntityRenderer<AnnoyingEntity, An
 
 
     public AnnoyingEntityRenderer(EntityRendererFactory.Context context) {
-        super(context, new AnnoyingEntityModel((context.getPart(EntityModelLayers.PLAYER))),0.5f);
+        super(context, new AnnoyingEntityModel(context.getPart(EntityModelLayers.PLAYER)),0.5f);
     }
 
     @Override

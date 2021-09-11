@@ -2,8 +2,9 @@ package io.github.Bubblie.Merplings;
 
 import io.github.Bubblie.Merplings.Entities.BaoEntity.AnnoyingEntity;
 import io.github.Bubblie.Merplings.Entities.BaoEntity.UndeadEntity;
-import io.github.Bubblie.Merplings.Entities.EntitySounds;
+import io.github.Bubblie.Merplings.Entities.ModSounds;
 import io.github.Bubblie.Merplings.MerpBlocks.BlockRegistry;
+import io.github.Bubblie.Merplings.Spells.SpellRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -17,7 +18,7 @@ import net.minecraft.util.registry.Registry;
 public class Main implements ModInitializer {
 
 	public static final String MOD_ID = "merp";
-
+	public static final SpellRegistry SPELL_REGISTRY = new SpellRegistry();
 
 	@Override
 	public void onInitialize()
@@ -25,7 +26,7 @@ public class Main implements ModInitializer {
 
 		ModItems.registerItems();
 		AnnoyingEntity.registerAnnoyingEntity();
-		EntitySounds.registerEntitySounds();
+		ModSounds.registerSounds();
 		UndeadEntity.registerUndeadEntity();
 		BlockRegistry.RegisterBlocks();
 
