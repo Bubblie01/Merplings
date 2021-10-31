@@ -15,4 +15,4 @@ There will be bosses that randomly spawn at times as well as bosses you have to 
 
 ## License
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+This template is available under the MIT License. 
